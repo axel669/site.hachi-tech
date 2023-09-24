@@ -12,11 +12,19 @@ channel.addEventListener(
             return
         }
         spin.value = data.spin
+        result.value = ""
     }
 )
 
 const items = signal([])
 const spin = signal(false)
+const showResult = (evt) => {
+    const p = (spin.value - 0.25) % 1
+    const i = Math.round((items.value.length * p) + (1 / items.value.length))
+    result.value = items.value[i]
+    // console.log("picked:", p, i, items.value[i])
+}
+const result = signal("")
 
 const Wheel = () => {
     const hacchanSize = 340
@@ -47,7 +55,7 @@ const Wheel = () => {
     )
 
     return html`
-        <svg style="background-color: transparent; width: 480px; height: 480px;">
+        <svg style="background-color: transparent; width: var(--size); height: var(--size); --size:800px;" viewBox="0 0 480 480">
             ${parts}
             <image
                 href="hachi-pointer.png"
@@ -55,9 +63,12 @@ const Wheel = () => {
                 x="240"
                 y="240"
                 style="--end: ${360 * spin.value}deg; --y: 220px;"
-                onAnimationEnd=${console.log}
+                onAnimationEnd=${showResult}
                 class=${className}
             />
+            <text style="alignment-baseline: hanging; text-anchor: middle; font-size: 16px;" x="240">
+                ${result.value}
+            <//>
         </svg>
     `
 }
@@ -71,7 +82,7 @@ const App = () => {
             text {
                 text-anchor: end;
                 alignment-baseline: middle;
-                font-size: 24px;
+                font-size: 8px;
                 font-family: 'Arbutus', cursive;
             }
 
