@@ -1,19 +1,6 @@
 import { html, render, signal, effect, computed }
 from "https://cdn.jsdelivr.net/npm/preact-htm-signals-standalone/dist/standalone.js"
 
-// const options = signal(localStorage.options ?? "")
-// effect(
-//     () => localStorage.options = options.value
-// )
-// const items = computed(
-//     () =>
-//         options.value
-//         .trim()
-//         .split(/\r?\n/)
-//         .filter(opt => opt.trim() !== "")
-// )
-// effect(() => console.log(items.value))
-
 const channel = new BroadcastChannel("wheel")
 
 channel.addEventListener(
@@ -30,13 +17,6 @@ channel.addEventListener(
 
 const items = signal([])
 const spin = signal(false)
-// const spinWheel = () => {
-//     if (spin.value === false) {
-//         spin.value = 10 + Math.random() * 5
-//         return
-//     }
-//     spin.value = false
-// }
 
 const Wheel = () => {
     const hacchanSize = 340
@@ -67,7 +47,7 @@ const Wheel = () => {
     )
 
     return html`
-        <svg ws-x="bg[transparent] w[480px] h[480px]">
+        <svg style="background-color: transparent; width: 480px; height: 480px;">
             ${parts}
             <image
                 href="hachi-pointer.png"
@@ -78,7 +58,7 @@ const Wheel = () => {
                 onAnimationEnd=${console.log}
                 class=${className}
             />
-    </svg>
+        </svg>
     `
 }
 
